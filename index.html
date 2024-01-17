@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI BOT CHAT EDUC BY JONELL MAGALLANES</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+        }
+
+        .dark-mode body {
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .chat-container {
+            width: 400px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            margin: 20px;
+        }
+
+        .chat-header {
+            background-color: #25d366;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            color: #333;
+        }
+
+        .dark-mode .theme-toggle {
+            color: #fff;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+        }
+
+        .user-message {
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 8px;
+            padding: 8px;
+            display: inline-block;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 8px;
+            display: inline-block;
+            max-width: 80%;
+        }
+
+        .typing-animation {
+            display: inline-block;
+            font-size: 1.2em;
+            color: #25d366;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .dots span {
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .response-time {
+            font-size: 0.8em;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .dark-mode .chat-header {
+            background-color: #128c7e;
+        }
+
+        .dark-mode .user-message {
+            background-color: #128c7e;
+        }
+
+        .dark-mode .user-name,
+        .dark-mode .response-time {
+            color: #fff;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        #userQuestion {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        #askButton {
+            background-color: #25d366;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #askButton:hover {
+            background-color: #128c7e;
+        }
+
+        /* Watermark styles */
+        .watermark {
+            position: absolute;
+            bottom: px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="theme-toggle" onclick="toggleTheme()">CHAT AI API LITE</div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be displayed here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userQuestion" placeholder="Type your question..." required>
+            <button id="askButton">Ask</button>
+        </div>
+        <!-- Watermark -->
+        <div class="watermark">AI CHAT EDUC</div>
+    </div>
+
+    <audio id="userSound" src="https://files.catbox.moe/739y72.mp3"></audio>
+    <audio id="aiSound" src="https://files.catbox.moe/dtja9q.mp3"></audio>
+
+    <script>
+        document.getElementById('askButton').addEventListener('click', async function () {
+            const userQuestion = document.getElementById('userQuestion').value;
+
+            // Play user sound
+            document.getElementById('userSound').play();
+
+            // Display user message
+            appendMessage('user-message', userQuestion);
+
+            // Display typing animation
+            const typingElement = appendMessage('typing-animation dots', 'Bot is typing');
+
+            // Simulate API request delay (you can replace this with an actual API request)
+            const start = Date.now();
+            const response = await fetch(`/api/hercai?question=${encodeURIComponent(userQuestion)}`);
+            const responseData = await response.json();
+            const end = Date.now();
+            const responseTime = end - start;
+
+            // Remove typing animation
+            removeTypingAnimation(typingElement);
+
+            // Play AI sound
+            document.getElementById('aiSound').play();
+
+            // Display bot message with fade-in animation
+            appendMessage('bot-message', responseData.reply, responseTime);
+
+            // Clear input after sending
+            document.getElementById('userQuestion').value = '';
+        });
+
+        function appendMessage(className, message, responseTime) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            chatMessages.appendChild(messageDiv);
+
+            // Scroll to the bottom to show the latest messages
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            if (className === 'typing-animation') {
+                for (let i = 0; i < message.length; i++) {
+                    const span = document.createElement('span');
+                    span.style.animationDelay = `${i * 0.1}s`;
+                    span.textContent = message[i];
+                    messageDiv.appendChild(span);
+                }
+            } else {
+                messageDiv.innerHTML = message;
+
+                if (responseTime) {
+                    const responseTimeDiv = document.createElement('div');
+                    responseTimeDiv.className = 'response-time';
+                    responseTimeDiv.textContent = `Response time: ${responseTime}ms`;
+                    messageDiv.appendChild(responseTimeDiv);
+                }
+
+                // Check if it's a bot message and add fade-in animation
+                if (className.includes('bot-message')) {
+                    messageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        messageDiv.style.transition = 'opacity 0.5s';
+                        messageDiv.style.opacity = '1';
+                    }, 0);
+                }
+            }
+
+            return messageDiv;
+        }
+
+        function removeTypingAnimation(typingElement) {
+            typingElement.classList.add('fade-out');
+            setTimeout(() => {
+                typingElement.remove();
+            }, 500);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
