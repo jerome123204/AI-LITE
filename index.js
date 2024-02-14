@@ -3,7 +3,7 @@ const axios = require('axios');
 const stringSimilarity = require('string-similarity');
 
 const app = express();
-const port = 1433;
+const port = 3000;
 
 // Example behavior array
 const behavior = [
