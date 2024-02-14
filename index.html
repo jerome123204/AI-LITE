@@ -193,7 +193,7 @@
 
             // Simulate API request delay (you can replace this with an actual API request)
             const start = Date.now();
-            const response = await fetch(`/api/hercai?question=${encodeURIComponent(userQuestion)}`);
+            const response = await fetch(`/api/gpt?question=${encodeURIComponent(userQuestion)}`);
             const responseData = await response.json();
             const end = Date.now();
             const responseTime = end - start;
