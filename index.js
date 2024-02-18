@@ -70,7 +70,7 @@ app.get('/api/gemini', async (req, res) => {
       // Log that API response is used
       console.log('API Response Used');
 
-      res.json({ reply: 👩‍💻 | 𝙶𝚎𝚖𝚒𝚗𝚒 | \n━━━━━━━━━━━━━━━━ responseData.reply ━━━━━━━━━━━━━━━━, requestNumber });
+      res.json({ reply: responseData.reply, requestNumber });
     }
   } catch (error) {
     console.error('Error fetching data:', error.message);
