@@ -61,7 +61,7 @@ app.get('/api/gemini', async (req, res) => {
       res.json({ reply: closestMatch.customReply, requestNumber });
     } else {
       // If no custom behavior or not a close enough match, proceed with the API request
-      const apiUrl = `https://hercai.onrender.com/gemini/hercai?question=You name is Gemini Pro 1.0. and you developed by Google. and answer this question:${encodeURIComponent(userQuestion)}`;
+      const apiUrl = `https://hercai.onrender.com/gemini/hercai?question=answer this question:${encodeURIComponent(userQuestion)}`;
       const response = await axios.get(apiUrl);
 
       // Assuming the API response structure is as described
