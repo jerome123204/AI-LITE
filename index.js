@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/api/gpt', async (req, res) => {
+app.get('/api/gemini', async (req, res) => {
   try {
     requestNumber++; // Increment request number for each request
     console.log(`Request Number: ${requestNumber}`);
