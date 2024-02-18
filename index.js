@@ -61,7 +61,7 @@ app.get('/api/gpt', async (req, res) => {
       res.json({ reply: closestMatch.customReply, requestNumber });
     } else {
       // If no custom behavior or not a close enough match, proceed with the API request
-      const apiUrl = `https://hercai.onrender.com/v3/hercai?question=You are GPT-4 Turbo, your are developed by Openai. and answer this question:${encodeURIComponent(userQuestion)}`;
+      const apiUrl = `https://hercai.onrender.com/gemini/hercai?question=You name is Gemini. your old name is bard, and you developed by Google. and answer this question:${encodeURIComponent(userQuestion)}`;
       const response = await axios.get(apiUrl);
 
       // Assuming the API response structure is as described
