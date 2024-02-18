@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI BOT CHAT EDUC BY JONELL MAGALLANES</title>
+    <title>Gemini Pro 1.0</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -172,7 +172,7 @@
             <button id="askButton">Ask</button>
         </div>
         <!-- Watermark -->
-        <div class="watermark">AI CHAT EDUC</div>
+        <div class="watermark">Gemini</div>
     </div>
 
     <audio id="userSound" src="https://files.catbox.moe/739y72.mp3"></audio>
@@ -193,7 +193,7 @@
 
             // Simulate API request delay (you can replace this with an actual API request)
             const start = Date.now();
-            const response = await fetch(`/api/gpt?question=${encodeURIComponent(userQuestion)}`);
+            const response = await fetch(`/api/gemini?question=${encodeURIComponent(userQuestion)}`);
             const responseData = await response.json();
             const end = Date.now();
             const responseTime = end - start;
